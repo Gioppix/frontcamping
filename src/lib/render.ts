@@ -61,12 +61,15 @@ export async function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
     minLon = minsmaxes.minLon;
     maxLon = minsmaxes.maxLon;
 
-    // map.fitBounds({
-    //     north: maxLat,
-    //     south: minLat,
-    //     east: maxLon,
-    //     west: minLon
-    // });
+    if (editable) {
+        console.log("edmin")
+        map.fitBounds({
+            north: maxLat,
+            south: minLat,
+            east: maxLon,
+            west: minLon
+        });
+    }
     // const a: google.maps.LatLng;
     // map.setCenter()
 }

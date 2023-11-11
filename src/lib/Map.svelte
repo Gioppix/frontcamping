@@ -33,6 +33,7 @@
   let opening: number;
   let closing: number;
   export let admin: boolean;
+  //   admin = false;
   let editable = false;
   $: {
     set_editable(editable);
@@ -44,6 +45,7 @@
 
   onMount(async () => {
     loader.importLibrary("maps").then(async () => {
+      console.log("init");
       map = new google.maps.Map(container, {
         zoom: 19,
         mapTypeId: "satellite",
@@ -52,6 +54,7 @@
 
       map.setTilt(0);
       //   console.log(map.getZoom());
+      set_editable(true);
       await init(canvas, map);
       mounted = true;
       map.addListener("click", (mapsMouseEvent) => {
