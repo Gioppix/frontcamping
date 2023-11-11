@@ -216,7 +216,7 @@
       <div class="stat place-items-center">
         <div class="stat-title text-xs">Traver time</div>
         <div class="stat-value">
-          {Math.ceil((remaining_distance * 1.38) / 60)}
+          {Math.ceil((remaining_distance * 1.38) / 120)}
         </div>
       </div>
     </div>
