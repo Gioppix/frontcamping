@@ -55,7 +55,7 @@
       map.setTilt(0);
       //   console.log(map.getZoom());
       set_editable(true);
-      await init(canvas, map);
+      await init(canvas, map, admin);
       mounted = true;
       map.addListener("click", (mapsMouseEvent) => {
         // console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));

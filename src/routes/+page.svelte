@@ -8,6 +8,7 @@
     init,
     map,
     set_current_pos,
+    set_editable,
     set_high_route,
   } from "$lib/render";
   import {
@@ -25,7 +26,8 @@
   let search: string = "B10";
   let found_id: number | undefined;
   let remaining_distance = 0;
-
+  let delay = 0;
+  set_editable(false);
   set_current_pos({ lat: 46.4782905, lon: 11.3319517 });
 
   setInterval(() => {
@@ -37,11 +39,16 @@
     console.log("searching");
     found_id = undefined;
     remaining_distance = 0;
+    delay = 0;
+
     set_high_route([]);
     compass = current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
+        if (place.name == "B07") {
+          delay = 3;
+        }
         const position = get_average(place.positions);
         found_id = get_closest(position).id;
 
@@ -216,7 +223,9 @@
       <div class="stat place-items-center">
         <div class="stat-title text-xs">Traver time</div>
         <div class="stat-value">
-          {Math.ceil((remaining_distance * 1.38) / 120)}
+          {Math.ceil((remaining_distance * 1.38) / 120)}{#if delay > 0}
+            <span class="text-error">{"+" + delay}</span>
+          {/if}
         </div>
       </div>
     </div>

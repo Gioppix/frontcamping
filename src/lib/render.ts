@@ -39,7 +39,7 @@ export let camping: Camping;
 
 
 
-export async function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
+export async function init(c: HTMLCanvasElement, mapp: google.maps.Map, center: boolean = false) {
     camping = await get_saved_camping();
 
     map = mapp;
@@ -61,8 +61,8 @@ export async function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
     minLon = minsmaxes.minLon;
     maxLon = minsmaxes.maxLon;
 
-    if (editable) {
-        console.log("edmin")
+    if (center) {
+        // console.log("editable " + editable)
         map.fitBounds({
             north: maxLat,
             south: minLat,
@@ -242,7 +242,7 @@ export function drawcamping() {
                 ctx.beginPath();
                 ctx.moveTo(start.newX, start.newY);
                 ctx.lineTo(end.newX, end.newY);
-                ctx.lineWidth = 7;
+                ctx.lineWidth = 5;
                 ctx.stroke();
             }
         });
