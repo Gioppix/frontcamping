@@ -61,12 +61,12 @@ export async function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
     minLon = minsmaxes.minLon;
     maxLon = minsmaxes.maxLon;
 
-    map.fitBounds({
-        north: maxLat,
-        south: minLat,
-        east: maxLon,
-        west: minLon
-    });
+    // map.fitBounds({
+    //     north: maxLat,
+    //     south: minLat,
+    //     east: maxLon,
+    //     west: minLon
+    // });
     // const a: google.maps.LatLng;
     // map.setCenter()
 }
@@ -194,10 +194,10 @@ export function drawcamping() {
 
         ctx.fill();
         ctx.fillStyle = "black";
-        ctx.font = "20px serif";
+        ctx.font = "20px Verdana";
         const pos = get_average(place.positions);
         const norm_pos = mapCoordinatesToCanvas(pos.lon, pos.lat);
-        ctx.fillText(`${place.name ? place.name : ""} ${place.hours ? place.hours.opening + " " + place.hours.closing : ""}`, norm_pos.newX - 15, norm_pos.newY + 10);
+        ctx.fillText(`${place.name ? place.name : ""}`, norm_pos.newX - 15, norm_pos.newY + 10);
 
 
         for (let coord of place.positions) {

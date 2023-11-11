@@ -50,7 +50,7 @@
         //styles: mapStyles, // optional
       });
 
-      map.setZoom(19);
+      map.setTilt(0);
       //   console.log(map.getZoom());
       await init(canvas, map);
       mounted = true;

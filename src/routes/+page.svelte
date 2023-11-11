@@ -22,7 +22,7 @@
   import { onMount } from "svelte";
 
   //   set_high_route([9985]);
-  let search: string;
+  let search: string = "B10";
   let found_id: number | undefined;
   let remaining_distance = 0;
 
@@ -38,7 +38,7 @@
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
-    compass = "v7 " + current_pos.lat + " " + current_pos.lon;
+    compass = current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
@@ -86,7 +86,9 @@
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         set_current_pos({ lat, lon });
-        map.setCenter({ lat, lng: lon });
+        if (map) {
+          map.setCenter({ lat, lng: lon });
+        }
         search = search.toUpperCase();
         console.log(`Latitude: ${lat}, Longitude: ${lon}`);
         // You can update the position on your app's UI here
@@ -147,16 +149,34 @@
     // set_high_route(path);
     // console.log(id);
   }
+
+  function get_text(arg0: string | number) {
+    switch (arg0) {
+      case "PIAZZOLA":
+        return "PITCH";
+      case "BAGNI":
+        return "WC";
+      case "SPIAGGIA":
+        return "BEACH";
+      case "RESTAURANT_BAR":
+        return "BAR";
+      case "MARKET":
+        return "MARKET";
+      case "PARKING":
+        return "PARKING";
+    }
+  }
 </script>
 
-{compass}
-<!-- <button
+<div class="p-4">
+  Posizione attuale: {compass}
+  <!-- <button
   class="btn"
   on:click={() => {
     // console.log(wrapper(6396));
   }}>AGGIORNA POS</button
 > -->
-<button
+  <!-- <button
   class="btn"
   on:click={() => {
     DeviceOrientationEvent.requestPermission()
@@ -174,30 +194,42 @@
   }}
 >
   CONSENT
-</button>
-<input
-  type="text"
-  placeholder="CERCA"
-  class="input input-bordered w-full max-w-xs"
-  bind:value={search}
-/>
+</button> -->
+  <input
+    type="text"
+    placeholder="CERCA"
+    class="input input-bordered w-full max-w-xs"
+    bind:value={search}
+  />
+</div>
 <div class="flex flex-col h-[50vh]">
   <div class="flex-grow"><Map admin={false} /></div>
 </div>
 {#if remaining_distance > 0}
-  <p>
-    Remaining distance: {Math.ceil(remaining_distance) + " meters"} Remaining time:
-    {Math.ceil((remaining_distance * 1.38) / 60) + " minutes"}
-  </p>
+  <div class="w-full flex justify-center items-center pt-4">
+    <div class="stats shadow">
+      <div class="stat place-items-center">
+        <div class="stat-title text-xs">Remaining meters</div>
+        <div class="stat-value">{Math.ceil(remaining_distance)}</div>
+      </div>
+
+      <div class="stat place-items-center">
+        <div class="stat-title text-xs">Traver time</div>
+        <div class="stat-value">
+          {Math.ceil((remaining_distance * 1.38) / 60)}
+        </div>
+      </div>
+    </div>
+  </div>
 {/if}
-<div class="flex gap-8 p-8 align-middle justify-center">
-  <div class="flex flex-row gap-8 flex-wrap">
+<div class="flex gap-8 p-2 align-middle justify-center">
+  <div class="flex flex-row gap-2 flex-wrap p-2">
     {#each kinds as kind}
       <button
-        class="btn btn-primary"
+        class="btn btn-primary flex-grow"
         on:click={() => {
           clikkkk(kind[0]);
-        }}>GO TO {kind[1]}</button
+        }}>{get_text(kind[1])}</button
       >
     {/each}
   </div>
