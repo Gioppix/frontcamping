@@ -183,17 +183,6 @@
   let compass: number;
   onMount(() => {
     // DeviceOrientationEvent.webkitCompassHeading();
-    DeviceOrientationEvent.requestPermission()
-      .then((permissionState) => {
-        if (permissionState === "granted") {
-          window.addEventListener("deviceorientation", (eventData) => {
-            alert(eventData.webkitCompassHeading);
-          });
-        }
-      })
-      .catch((e) => {
-        alert(e);
-      });
     // init();
   });
   function handleOrientation(event) {
@@ -212,6 +201,22 @@
   on:click={() => {
     // console.log(wrapper(6396));
   }}>AGGIORNA POS</button
+>
+<button
+  class="btn"
+  on:click={() => {
+    DeviceOrientationEvent.requestPermission()
+      .then((permissionState) => {
+        if (permissionState === "granted") {
+          window.addEventListener("deviceorientation", (eventData) => {
+            alert(eventData.webkitCompassHeading);
+          });
+        }
+      })
+      .catch((e) => {
+        alert(e);
+      });
+  }}>CONSENT</button
 >
 <input
   type="text"
