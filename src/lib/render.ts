@@ -13,6 +13,10 @@ let map: google.maps.Map;
 let pixelRatio: number;
 let kind: PlaceKind;
 let mode: string;
+let name: string;
+let hour: boolean;
+let opening: number;
+let closing: number;
 
 let minLat: number;
 let maxLat: number;
@@ -57,23 +61,25 @@ export function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
 }
 let selected: Coordinate | undefined = undefined;
 export async function handleClick(lat: number, lon: number) {
-    switch (mode) {
-        case "DELETE":
-            deleteee(lat, lon);
-            break;
-        case "NEW":
-            neww(lat, lon);
-            break;
-        case "UPDATE":
-            edit(lat, lon);
-            break;
-        case "STREET":
-            street(lat, lon);
-            break;
-        default:
-            throw new Error("unsupported mode")
+    if (editable) {
+        switch (mode) {
+            case "DELETE":
+                deleteee(lat, lon);
+                break;
+            case "NEW":
+                neww(lat, lon);
+                break;
+            case "UPDATE":
+                edit(lat, lon);
+                break;
+            case "STREET":
+                street(lat, lon);
+                break;
+            default:
+                throw new Error("unsupported mode")
+        }
+        await save_camping(camping);
     }
-    await save_camping(camping);
 
 }
 
@@ -115,8 +121,18 @@ export function drawcamping() {
             }
 
         }
+
         ctx.closePath();
+
+
         ctx.fill();
+        ctx.fillStyle = "black";
+        ctx.font = "20px serif";
+        const pos = get_average(place.positions);
+        const norm_pos = mapCoordinatesToCanvas(pos.lon, pos.lat);
+        ctx.fillText(`${place.name ? place.name : ""} ${place.hours ? place.hours.opening + " " + place.hours.closing : ""}`, norm_pos.newX, norm_pos.newY);
+
+
         for (let coord of place.positions) {
             const norm_coord = mapCoordinatesToCanvas(coord.lon, coord.lat);
             if (editable) {
@@ -242,6 +258,19 @@ export function setMode(m: string) {
     mode = m;
 }
 
+export function setname(n: string) {
+    name = n;
+}
+export function sethour(v: boolean) {
+    hour = v;
+}
+export function setopening(v: number) {
+    opening = v;
+}
+export function setclosing(v: number) {
+    closing = v;
+}
+
 
 
 function edit(lat: number, lon: number) {
@@ -286,7 +315,9 @@ function neww(lat: number, lon: number) {
         place = {
             id: Math.floor(Math.random() * (9999 - 100 + 1)) + 100,
             kind,
-            positions: []
+            positions: [],
+            name,
+            hours: hour ? { closing, opening } : undefined
         }
         camping.places.push(place)
         place.positions.push({ lat, lon })
@@ -358,4 +389,25 @@ function deleteee(lat: number, lon: number) {
 
 
     }
+}
+
+
+
+function get_average(coordinates: Coordinate[]): Coordinate {
+    // if (coordinates.length === 0) {
+    //     return null; // Return null for empty array
+    // }
+
+    let totalLat = 0;
+    let totalLon = 0;
+
+    for (const coord of coordinates) {
+        totalLat += coord.lat;
+        totalLon += coord.lon;
+    }
+
+    return {
+        lat: totalLat / coordinates.length,
+        lon: totalLon / coordinates.length
+    };
 }

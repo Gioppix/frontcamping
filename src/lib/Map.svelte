@@ -9,6 +9,10 @@
     setMode,
     set_bounds,
     set_editable,
+    setclosing,
+    sethour,
+    setname,
+    setopening,
   } from "$lib/render";
   import { PlaceKind } from "./storage";
 
@@ -17,6 +21,10 @@
   let ready = false;
   let kind: PlaceKind;
   let mode: string;
+  let name: string;
+  let hour: boolean;
+  let opening: number;
+  let closing: number;
 
   onMount(() => {});
   export let admin: boolean;
@@ -83,6 +91,19 @@
     setMode(mode);
   }
 
+  $: {
+    sethour(hour);
+  }
+  $: {
+    setname(name);
+  }
+  $: {
+    setopening(opening);
+  }
+  $: {
+    setclosing(closing);
+  }
+
   let kinds = Object.keys(PlaceKind)
     .filter((key) => !isNaN(Number(key)))
     .map((key) => [Number(key), PlaceKind[key as any]]);
@@ -119,6 +140,26 @@
         <option value={option[0]}>{option[1]}</option>
       {/each}
     </select>
+  </div>
+  <div class="flex">
+    <span>NAME</span>
+    <input class="input input-bordered w-full max-w-xs" bind:value={name} />
+  </div>
+  <div class="flex">
+    <span>HOUR</span>
+    <input type="checkbox" class="toggle" bind:checked={hour} />
+    {#if hour}
+      <span>OPENING</span>
+      <input
+        class="input input-bordered w-full max-w-xs"
+        bind:value={opening}
+      />
+      <span>CLOSING</span>
+      <input
+        class="input input-bordered w-full max-w-xs"
+        bind:value={closing}
+      />
+    {/if}
   </div>
 </div>
 <div class="w-screen h-[70vh] relative">

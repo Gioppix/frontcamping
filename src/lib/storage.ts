@@ -35,7 +35,8 @@ export interface Place {
     hours?: {
         opening: number,
         closing: number,
-    }
+    },
+    name?: string
 }
 export interface StreetNode {
     id: number,
