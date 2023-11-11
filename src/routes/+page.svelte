@@ -182,7 +182,15 @@
   //   }
   let compass: number;
   onMount(() => {
-    DeviceOrientationEvent.requestPermission();
+    DeviceOrientationEvent.requestPermission()
+      .then((response) => {
+        if (response === "granted") {
+          window.addEventListener("deviceorientation", handler, true);
+        } else {
+          alert("has to be allowed!");
+        }
+      })
+      .catch(() => alert("not supported"));
     window.addEventListener(
       "deviceorientation",
       function (event) {
