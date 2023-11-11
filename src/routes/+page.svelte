@@ -184,15 +184,16 @@
   onMount(() => {
     // DeviceOrientationEvent.webkitCompassHeading();
     DeviceOrientationEvent.requestPermission()
-      .then((response) => {
-        if (response === "granted") {
-          //   window.addEventListener("deviceorientation", handler, true);
-        } else {
-          alert("has to be allowed!");
+      .then((permissionState) => {
+        if (permissionState === "granted") {
+          window.addEventListener("deviceorientation", (eventData) => {
+            alert(eventData.webkitCompassHeading);
+          });
         }
       })
-      .catch(() => alert("not supported"));
-    window.addEventListener("deviceorientation", handleOrientation, false);
+      .catch((e) => {
+        alert(e);
+      });
     // init();
   });
   function handleOrientation(event) {
