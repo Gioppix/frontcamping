@@ -35,7 +35,7 @@
     return { place: random_place.id, text: suggest(random_place) };
   }
 
-  get_suggestion(camping, { lat: 1, lon: 2 }, 60 * 7);
+  //   get_suggestion(camping, { lat: 1, lon: 2 }, 60 * 7);
 
   function suggest(place: Place) {
     switch (place.kind) {
@@ -66,7 +66,7 @@
   let current_suggestion: { place: number; text: string } | undefined =
     undefined;
   setInterval(() => {
-    if (current_pos) {
+    if (current_pos && camping) {
       current_suggestion = get_suggestion(
         camping,
         current_pos,
@@ -79,7 +79,7 @@
   export let onclick: (id: number) => void;
 </script>
 
-{#if current_pos && current_suggestion}
+{#if current_pos && current_suggestion && camping}
   <div class="card w-72 bg-base-300 shadow-xl">
     <div class="card-body">
       <p>{current_suggestion.text}</p>

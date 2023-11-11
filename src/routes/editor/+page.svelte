@@ -1,6 +1,4 @@
 <script lang="ts">
-  console.log("lol");
-
   import Map from "$lib/Map.svelte";
 </script>
 

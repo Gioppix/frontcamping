@@ -34,9 +34,6 @@
   let editable = false;
   $: {
     set_editable(editable);
-    if (mounted) {
-      drawcamping();
-    }
   }
 
   let container: HTMLDivElement;
@@ -53,7 +50,7 @@
 
       map.setZoom(19);
       console.log(map.getZoom());
-      init(canvas, map);
+      await init(canvas, map);
       mounted = true;
       map.addListener("click", (mapsMouseEvent) => {
         // console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));

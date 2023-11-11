@@ -11,80 +11,6 @@
   import Suggestion from "./Suggestion.svelte";
 
   //   set_high_route([9985]);
-  //   function dijkstra(camp: Camping, startNodeId: number, endNodeId: number) {
-  //     let graph = camp.streets;
-  //     // Inizializzazione
-  //     const distances = {};
-  //     const previousNodes = {};
-  //     const queue = [];
-
-  //     for (const node of graph) {
-  //       distances[node.id] = Infinity;
-  //       previousNodes[node.id] = null;
-  //       queue.push(node.id);
-  //     }
-
-  //     distances[startNodeId] = 0;
-
-  //     while (queue.length > 0) {
-  //       // Trova il nodo con la distanza minima
-  //       const current = queue.reduce((minNodeId, nodeId) =>
-  //         distances[nodeId] < distances[minNodeId] ? nodeId : minNodeId
-  //       );
-
-  //       // Rimuovi il nodo corrente dalla coda
-  //       queue.splice(queue.indexOf(current), 1);
-
-  //       // Per ogni nodo collegato
-  //       for (const connectedNodeId of graph.find((node) => node.id === current)
-  //         .connects) {
-  //         const connectedNode = graph.find((node) => node.id === connectedNodeId);
-
-  //         // Calcola la distanza euclidea tra i nodi
-  //         console.log("NODE: ", connectedNode);
-  //         const distance = Math.sqrt(
-  //           Math.pow(
-  //             connectedNode.lat - graph.find((node) => node.id === current).lat,
-  //             2
-  //           ) +
-  //             Math.pow(
-  //               connectedNode.lng - graph.find((node) => node.id === current).lng,
-  //               2
-  //             )
-  //         );
-
-  //         const alt = distances[current] + distance;
-
-  //         // Se la nuova distanza è più breve, aggiorna le strutture dati
-  //         if (alt < distances[connectedNodeId]) {
-  //           distances[connectedNodeId] = alt;
-  //           previousNodes[connectedNodeId] = current;
-  //         }
-  //       }
-  //     }
-
-  //     // Costruisci il percorso risultante
-  //     const path = [];
-  //     let current = endNodeId;
-
-  //     while (current !== null) {
-  //       path.unshift(current);
-  //       current = previousNodes[current];
-  //     }
-
-  //     return {
-  //       distance: distances[endNodeId],
-  //       path: path,
-  //     };
-  //   }
-
-  //   // Esempio di utilizzo:
-  //   const startNodeId = 2135;
-  //   const endNodeId = 2387;
-
-  //   const result = dijkstra(camping, startNodeId, endNodeId);
-  //   console.log("Distanza totale:", result.distance * 110000);
-  //   console.log("Percorso:", result.path);
 
   const options = {
     // enableHighAccuracy: true,
@@ -111,7 +37,7 @@
       );
     });
   }
-  //   set_high_route([[2654, 9769]]);
+  set_high_route([[2654, 9769]]);
   function start_updating() {
     console.log("UPDATING");
     getCoordinates().then((c) => {

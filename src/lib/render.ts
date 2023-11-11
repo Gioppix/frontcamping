@@ -1,38 +1,47 @@
 import { PlaceKind, type Camping, type Coordinate, type Place, type StreetNode } from "./storage";
+import { get_saved_camping, save_camping } from "./storage";
+
 export enum Mode {
     NEW,
     DELETE,
     UPDATE,
     STREET
 }
-// await new Promise(r => setTimeout(r, 2000));
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 export let map: google.maps.Map;
-let pixelRatio: number;
-let kind: PlaceKind;
-let mode: string;
-let name: string;
-let hour: boolean;
-let opening: number;
-let closing: number;
+let pixelRatio: number = 2;
+let kind: PlaceKind = PlaceKind.BAGNI;
+let mode: string = "";
+let name: string = "";
+let hour: boolean = false;
+let opening: number = 0;
+let closing: number = 0;
 
-let minLat: number;
-let maxLat: number;
-let minLon: number;
-let maxLon: number;
+let minLat: number = 0;
+let maxLat: number = 0;
+let minLon: number = 0;
+let maxLon: number = 0;
+let selected: Coordinate | undefined = undefined;
+const vertices_radiuses = 6;
+let place: Place | undefined = undefined;
+
+let first_street: StreetNode | undefined = undefined;
+
+let highlited_route: [number, number][] | undefined = undefined;
+export let editable: boolean = false;
 
 export let current_pos: Coordinate | undefined = undefined;
 
-let highlited_route: [number, number][] | undefined = undefined;
-
-export let editable: boolean;
-import { get_saved_camping, save_camping } from "./storage";
-export let camping = await get_saved_camping();
 
 
-const vertices_radiuses = 6;
-export function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
+export let camping: Camping;
+
+
+
+export async function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
+    camping = await get_saved_camping();
+
     map = mapp;
     canvas = c;
     let temp = canvas.getContext("2d");
@@ -61,7 +70,6 @@ export function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
     // const a: google.maps.LatLng;
     // map.setCenter()
 }
-let selected: Coordinate | undefined = undefined;
 export async function handleClick(lat: number, lon: number) {
     if (editable) {
         switch (mode) {
@@ -332,7 +340,6 @@ function edit(lat: number, lon: number) {
     }
 }
 
-let place: Place | undefined = undefined;
 function neww(lat: number, lon: number) {
     if (!place) {
         console.log("CREATING NEW PLACE")
@@ -360,7 +367,6 @@ function neww(lat: number, lon: number) {
     }
 }
 
-let first_street: StreetNode | undefined = undefined;
 function street(lat: number, lon: number) {
     let selected_street: StreetNode | undefined = undefined;
 
