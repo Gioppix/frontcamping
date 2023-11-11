@@ -13,7 +13,7 @@
   //   set_high_route([9985]);
 
   const options = {
-    // enableHighAccuracy: true,
+    enableHighAccuracy: true,
     timeout: 35000,
     maximumAge: 0,
   };
