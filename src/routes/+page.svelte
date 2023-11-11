@@ -4,11 +4,13 @@
     camping,
     distance,
     get_average,
+    init,
     map,
     set_current_pos,
     set_high_route,
   } from "$lib/render";
   import type { Camping, Coordinate, StreetNode } from "$lib/storage";
+  import { onMount } from "svelte";
   import Suggestion from "./Suggestion.svelte";
 
   //   set_high_route([9985]);
@@ -154,8 +156,51 @@
     }
     set_high_route(paths);
   }
+
+  //   const isIOS =
+  //     navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
+  //     navigator.userAgent.match(/AppleWebKit/);
+
+  //   function init() {
+  //     const selectedLatitude = 40.7128; // New York City
+  //     const selectedLongitude = -74.006; // New York City
+
+  //     //startBtn.addEventListener("click", startCompass);
+  //     navigator.geolocation.getCurrentPosition(locationHandler);
+
+  //     if (!isIOS) {
+  //       window.addEventListener("deviceorientationabsolute", handler, true);
+  //     }
+  //   }
+  //   function locationHandler(position: number) {
+  //     const { latitude, longitude } = position.coords;
+  //     pointDegree = calcDegreeToPoint(latitude, longitude);
+
+  //     if (pointDegree < 0) {
+  //       pointDegree = pointDegree + 360;
+  //     }
+  //   }
+  let compass: number;
+  onMount(() => {
+    DeviceOrientationEvent.requestPermission();
+    window.addEventListener(
+      "deviceorientation",
+      function (event) {
+        const alpha = event.alpha; // Compass direction in degrees (0 to 360)
+        const beta = event.beta; // Front-to-back tilt in degrees (-180 to 180)
+        const gamma = event.gamma; // Left-to-right tilt in degrees (-90 to 90)
+
+        // Use the alpha value as your compass direction
+        console.log(`Compass heading: ${alpha}`);
+        compass = alpha;
+      },
+      false
+    );
+    // init();
+  });
 </script>
 
+{compass}
 <button
   class="btn"
   on:click={() => {
