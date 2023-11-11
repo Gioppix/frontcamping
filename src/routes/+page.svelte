@@ -35,6 +35,7 @@
   }
 
   $: {
+    console.log("searching");
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
@@ -85,6 +86,7 @@
         const lon = position.coords.longitude;
         set_current_pos({ lat, lon });
         map.setCenter({ lat, lng: lon });
+        search = search + "";
         console.log(`Latitude: ${lat}, Longitude: ${lon}`);
         // You can update the position on your app's UI here
       },
