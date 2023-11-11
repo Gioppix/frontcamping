@@ -182,6 +182,7 @@
   //   }
   let compass: number;
   onMount(() => {
+    // DeviceOrientationEvent.webkitCompassHeading();
     DeviceOrientationEvent.requestPermission()
       .then((response) => {
         if (response === "granted") {
@@ -191,21 +192,17 @@
         }
       })
       .catch(() => alert("not supported"));
-    window.addEventListener(
-      "deviceorientation",
-      function (event) {
-        const alpha = event.alpha; // Compass direction in degrees (0 to 360)
-        const beta = event.beta; // Front-to-back tilt in degrees (-180 to 180)
-        const gamma = event.gamma; // Left-to-right tilt in degrees (-90 to 90)
-
-        // Use the alpha value as your compass direction
-        console.log(`Compass heading: ${alpha}`);
-        compass = alpha;
-      },
-      false
-    );
+    window.addEventListener("deviceorientation", handleOrientation, false);
     // init();
   });
+  function handleOrientation(event) {
+    if ("webkitCompassHeading" in event) {
+      const compassHeading = event.webkitCompassHeading;
+      compass = compassHeading;
+    } else {
+      console.log("Compass heading not supported");
+    }
+  }
 </script>
 
 {compass}
