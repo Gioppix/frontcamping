@@ -35,9 +35,6 @@
   }
 
   setInterval(() => {
-    if (remaining_distance < 5) {
-      search = "";
-    }
     search += "1";
     search = search.substring(0, search.length - 1);
   }, 50);
@@ -47,7 +44,7 @@
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
-    compass = "v6 " + current_pos.lat + " " + current_pos.lon;
+    compass = "v7 " + current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
@@ -58,7 +55,7 @@
           get_closest(current_pos).id,
           found_id
         );
-        remaining_distance = distance;
+        remaining_distance = distance * 111000;
         set_high_route(path);
       }
     }
