@@ -210,6 +210,7 @@
         if (permissionState === "granted") {
           window.addEventListener("deviceorientation", (eventData) => {
             compass = eventData.webkitCompassHeading;
+            map.setHeading(compass);
           });
         }
       })
