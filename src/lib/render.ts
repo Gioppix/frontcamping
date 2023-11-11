@@ -9,7 +9,7 @@ export enum Mode {
 
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
-let map: google.maps.Map;
+export let map: google.maps.Map;
 let pixelRatio: number;
 let kind: PlaceKind;
 let mode: string;
@@ -23,9 +23,9 @@ let maxLat: number;
 let minLon: number;
 let maxLon: number;
 
-let current_pos: Coordinate | undefined = undefined;
+export let current_pos: Coordinate | undefined = undefined;
 
-let highlited_route: number[] | undefined = undefined;
+let highlited_route: [number, number][] | undefined = undefined;
 
 export let editable: boolean;
 import { get_saved_camping, save_camping } from "./storage";
@@ -163,10 +163,15 @@ export function drawcamping() {
                 const start = mapCoordinatesToCanvas(street.position.lon, street.position.lat);
                 const end = mapCoordinatesToCanvas(connectedStreet.position.lon, connectedStreet.position.lat);
 
-                if (highlited_route?.find(iddd => iddd == connectionId)) {
-                    ctx.fillStyle = "white";
+                // console.log(highlited_route)
+                if (highlited_route?.find(route => {
+                    return route[0] == street.id && route[1] == connectionId
+                })) {
+                    // console.log("found")
+                    ctx.strokeStyle = "blue";
+
                 } else {
-                    ctx.fillStyle = "blue";
+                    ctx.strokeStyle = "white";
 
                 }
 
@@ -218,7 +223,7 @@ export function set_bounds(bounds: google.maps.LatLngBounds
 }
 
 
-function distance(lo1: number, lo2: number, la1: number, la2: number): number {
+export function distance(lo1: number, lo2: number, la1: number, la2: number): number {
     return Math.sqrt((lo1 - lo2) * (lo1 - lo2) + (la1 - la2) * (la1 - la2))
 }
 
@@ -434,7 +439,7 @@ function get_average(coordinates: Coordinate[]): Coordinate {
 }
 
 
-export function set_high_route(h: number[] | undefined) {
+export function set_high_route(h: [number, number][] | undefined) {
     highlited_route = h;
 }
 

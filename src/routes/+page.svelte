@@ -1,7 +1,14 @@
 <script lang="ts">
   import Map from "$lib/Map.svelte";
-  import { camping, set_current_pos, set_high_route } from "$lib/render";
-  import type { Camping, Coordinate } from "$lib/storage";
+  import {
+    camping,
+    distance,
+    map,
+    set_current_pos,
+    set_high_route,
+  } from "$lib/render";
+  import type { Coordinate, StreetNode } from "$lib/storage";
+  import Suggestion from "./Suggestion.svelte";
 
   //   set_high_route([9985]);
   //   function dijkstra(camp: Camping, startNodeId: number, endNodeId: number) {
@@ -80,8 +87,8 @@
   //   console.log("Percorso:", result.path);
 
   const options = {
-    enableHighAccuracy: true,
-    timeout: 15000,
+    // enableHighAccuracy: true,
+    timeout: 35000,
     maximumAge: 0,
   };
   export async function getCoordinates(): Promise<Coordinate> {
@@ -101,17 +108,50 @@
       );
     });
   }
+  set_high_route([[2654, 9769]]);
   function start_updating() {
     console.log("UPDATING");
     getCoordinates().then((c) => {
       console.log("UPDATED");
       set_current_pos(c);
+      const id = get_closest().id;
+      console.log(id);
+      map.setCenter({ lat: c.lat, lng: c.lon });
+      //   set_high_route([id]);
       start_updating();
     });
+  }
+
+  function get_closest(): StreetNode {
+    let closest: StreetNode = camping.streets[0];
+    let min_dist = Infinity;
+    camping.streets.forEach((s_n) => {
+      const cur_dist = distance(
+        s_n.position.lon,
+        closest.position.lon,
+        s_n.position.lat,
+        closest.position.lat
+      );
+      if (cur_dist < min_dist) {
+        min_dist = cur_dist;
+        closest = s_n;
+      }
+    });
+    return closest;
   }
 </script>
 
 <button class="btn" on:click={start_updating}>AGGIORNA POS</button>
-<div class="flex flex-col">
+<div class="flex flex-col h-[50vh]">
   <div class="flex-grow"><Map admin={false} /></div>
+</div>
+<div class="flex gap-8 p-8">
+  <div class="flex flex-col gap-8">
+    <Suggestion />
+    <Suggestion />
+  </div>
+  <div class="flex flex-col gap-8">
+    <Suggestion />
+    <Suggestion />
+  </div>
 </div>

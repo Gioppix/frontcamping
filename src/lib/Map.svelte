@@ -38,48 +38,31 @@
 
   let container: HTMLDivElement;
   let map: google.maps.Map;
-  let zoom = 19;
   //45.13785978577548, 10.288059671713954
-  let center = { lat: 45.13785978577548, lng: 10.288059671713954 };
 
   onMount(async () => {
-    console.log("mount");
     // @ts-ignore
     window.initMap = () => {
       console.log("ciao");
       ready = true;
       //let container = document.getElementById("map");
       map = new google.maps.Map(container, {
-        zoom,
-        center,
+        zoom: 19,
         mapTypeId: "satellite",
         //styles: mapStyles, // optional
       });
+      map.setZoom(19);
+      console.log(map.getZoom());
       init(canvas, map);
-      drawcamping();
       mounted = true;
-      drawcamping();
       map.addListener("click", (mapsMouseEvent) => {
         // console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
         handleClick(mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
         drawcamping();
       });
-      map.addListener("drag", () => {
-        const temp = map.getBounds();
-        if (temp) {
-          set_bounds(temp);
-        }
-        drawcamping();
-        //console.log(map.getBounds());
-      });
+
       map.addListener("zoom_changed", () => {
-        drawcamping();
-      });
-      map.addListener("mousemove", () => {
-        drawcamping();
-      });
-      map.addListener("bounds_changed", () => {
-        drawcamping();
+        console.log(map.getZoom());
       });
     };
     // map.getBounds();
@@ -104,6 +87,21 @@
     setclosing(closing);
   }
 
+  function animate() {
+    let i = 0;
+    if (map) {
+      const temp = map.getBounds();
+      if (temp) {
+        set_bounds(temp);
+        i++;
+        drawcamping();
+      }
+    }
+
+    requestAnimationFrame(animate); // Request the next frame
+  }
+  console.log("QUI");
+  requestAnimationFrame(animate); // Start the animation loop
   let kinds = Object.keys(PlaceKind)
     .filter((key) => !isNaN(Number(key)))
     .map((key) => [Number(key), PlaceKind[key as any]]);
@@ -164,7 +162,7 @@
   </div>
 {/if}
 
-<div class="w-screen h-[70vh] relative">
+<div class="w-screen h-full relative">
   <canvas
     bind:this={canvas}
     class="w-full h-full absolute"
