@@ -25,14 +25,8 @@
   let search: string;
   let found_id: number | undefined;
   let remaining_distance = 0;
-  let remaining_time: string;
 
   set_current_pos({ lat: 46.4782905, lon: 11.3319517 });
-
-  $: {
-    remaining_distance;
-    remaining_time = Math.round((remaining_distance * 1.38) / 60) + " minutes";
-  }
 
   setInterval(() => {
     search += "1";
@@ -193,7 +187,7 @@
 {#if remaining_distance > 0}
   <p>
     Remaining distance: {Math.ceil(remaining_distance) + " meters"} Remaining time:
-    {remaining_time}
+    {Math.ceil((remaining_distance * 1.38) / 60) + " minutes"}
   </p>
 {/if}
 <div class="flex gap-8 p-8 align-middle justify-center">
