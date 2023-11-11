@@ -1,5 +1,4 @@
 import { PlaceKind, type Camping, type Coordinate, type Place, type StreetNode } from "./storage";
-
 export enum Mode {
     NEW,
     DELETE,
@@ -97,7 +96,7 @@ export function drawcamping() {
     function mapCoordinatesToCanvas(x: number, y: number): { newX: number, newY: number } {
         // Ensure the ranges are valid
         if (maxLat <= minLat || maxLon <= minLon) {
-            throw new Error("Invalid latitude or longitude range");
+            //throw new Error("Invalid latitude or longitude range");
         }
 
         // Map x (longitude) from [minLon, maxLon] to [0, canvasWidth]

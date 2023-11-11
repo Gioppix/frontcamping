@@ -16,6 +16,7 @@
 //     close_time_minutes?: number,
 //     accessible: boolean,
 // }
+
 export interface Coordinate {
     lat: number,
     lon: number
@@ -523,3 +524,4 @@ let defaultcamping: Camping = {
     ]
 }
 // save_camping(defaultcamping);
+

@@ -1,4 +1,6 @@
 <script lang="ts">
+  console.log("lol");
+
   import Map from "$lib/Map.svelte";
   import {
     camping,
@@ -91,6 +93,9 @@
     timeout: 35000,
     maximumAge: 0,
   };
+  function go_to(id: number) {
+    console.log("going to " + id);
+  }
   export async function getCoordinates(): Promise<Coordinate> {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
@@ -139,19 +144,28 @@
     });
     return closest;
   }
+
+  window.onerror = function (message, file, line, col, error) {
+    alert("Error occurred: " + error.message);
+    return false;
+  };
+  window.addEventListener("error", function (e) {
+    alert("Error occurred: " + e.error.message);
+    return false;
+  });
+
+  window.addEventListener("unhandledrejection", function (e) {
+    alert("Error occurred: " + e.reason.message);
+  });
 </script>
 
 <button class="btn" on:click={start_updating}>AGGIORNA POS</button>
 <div class="flex flex-col h-[50vh]">
   <div class="flex-grow"><Map admin={false} /></div>
 </div>
-<div class="flex gap-8 p-8">
+<div class="flex gap-8 p-8 align-middle justify-center">
   <div class="flex flex-col gap-8">
-    <Suggestion />
-    <Suggestion />
-  </div>
-  <div class="flex flex-col gap-8">
-    <Suggestion />
-    <Suggestion />
+    <Suggestion onclick={go_to} />
+    <Suggestion onclick={go_to} />
   </div>
 </div>

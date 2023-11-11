@@ -72,17 +72,26 @@
         current_pos,
         getTimeOfDayInMinutes()
       );
-      console.log(current_suggestion);
+      //   console.log(current_suggestion);
     }
   }, 1 * 1000);
+
+  export let onclick: (id: number) => void;
 </script>
 
 {#if current_pos && current_suggestion}
-  <div class="card w-96 bg-base-300 shadow-xl">
+  <div class="card w-72 bg-base-300 shadow-xl">
     <div class="card-body">
       <p>{current_suggestion.text}</p>
       <div class="card-actions justify-end">
-        <button class="btn btn-primary">Buy Now</button>
+        <button
+          class="btn btn-primary"
+          on:click={() => {
+            onclick(current_suggestion.place);
+          }}
+          >GO TO {camping.places.find((p) => p.id == current_suggestion.place)
+            ?.name}</button
+        >
       </div>
     </div>
   </div>
