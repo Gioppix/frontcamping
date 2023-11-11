@@ -27,7 +27,6 @@
   let found_id: number | undefined;
   let remaining_distance = 0;
   let delay = 0;
-  set_editable(false);
   set_current_pos({ lat: 46.4782905, lon: 11.3319517 });
 
   setInterval(() => {

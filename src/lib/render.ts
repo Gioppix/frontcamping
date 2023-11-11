@@ -275,6 +275,7 @@ export function drawcamping() {
 
 
 export function set_editable(b: boolean) {
+    console.log(b)
     editable = b;
 }
 
