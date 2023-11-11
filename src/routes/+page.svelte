@@ -36,15 +36,15 @@
 
   setInterval(() => {
     search += "1";
-    search.substring(0, search.length - 1);
-  }, 10);
+    search = search.substring(0, search.length - 1);
+  }, 50);
 
   $: {
     console.log("searching");
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
-    compass = "v3 " + current_pos.lat + " " + current_pos.lon;
+    compass = "v4 " + current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
