@@ -39,6 +39,7 @@
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
+    compass = "v1 " + current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
@@ -108,7 +109,7 @@
     // });
   }
 
-  let compass: number;
+  let compass: string;
   onMount(() => {
     start_updating();
     // DeviceOrientationEvent.webkitCompassHeading();
