@@ -168,8 +168,8 @@
   }
 </script>
 
-<div class="p-4">
-  Posizione attuale: {compass}
+<div class="p-4 w-full">
+  <!-- Posizione attuale: {compass} -->
   <!-- <button
   class="btn"
   on:click={() => {
@@ -198,7 +198,7 @@
   <input
     type="text"
     placeholder="CERCA"
-    class="input input-bordered w-full max-w-xs"
+    class="input input-bordered w-full"
     bind:value={search}
   />
 </div>
