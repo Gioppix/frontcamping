@@ -209,7 +209,7 @@
       .then((permissionState) => {
         if (permissionState === "granted") {
           window.addEventListener("deviceorientation", (eventData) => {
-            alert(eventData.webkitCompassHeading);
+            compass = eventData.webkitCompassHeading;
           });
         }
       })
