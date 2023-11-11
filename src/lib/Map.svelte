@@ -28,7 +28,7 @@
 
   onMount(() => {});
   export let admin: boolean;
-  let editable = true;
+  let editable = false;
   $: {
     set_editable(editable);
     if (mounted) {
@@ -119,49 +119,51 @@
   >
   </script>
 </svelte:head>
+{#if admin}
+  <div class="flex gap-8">
+    <div class="flex">
+      <span> EDIT </span>
+      <input type="checkbox" class="toggle" bind:checked={editable} />
+    </div>
+    <div class="flex">
+      <span>MODE</span>
+      <select bind:value={mode}>
+        {#each Object.values(Mode).filter((value) => typeof value === "string") as option}
+          <option value={option}>{option}</option>
+        {/each}
+      </select>
+    </div>
+    <div class="flex">
+      <span>KIND</span>
+      <select bind:value={kind}>
+        {#each kinds as option}
+          <option value={option[0]}>{option[1]}</option>
+        {/each}
+      </select>
+    </div>
+    <div class="flex">
+      <span>NAME</span>
+      <input class="input input-bordered w-full max-w-xs" bind:value={name} />
+    </div>
+    <div class="flex">
+      <span>HOUR</span>
+      <input type="checkbox" class="toggle" bind:checked={hour} />
+      {#if hour}
+        <span>OPENING</span>
+        <input
+          class="input input-bordered w-full max-w-xs"
+          bind:value={opening}
+        />
+        <span>CLOSING</span>
+        <input
+          class="input input-bordered w-full max-w-xs"
+          bind:value={closing}
+        />
+      {/if}
+    </div>
+  </div>
+{/if}
 
-<div class="flex gap-8">
-  <div class="flex">
-    <span> EDIT </span>
-    <input type="checkbox" class="toggle" bind:checked={editable} />
-  </div>
-  <div class="flex">
-    <span>MODE</span>
-    <select bind:value={mode}>
-      {#each Object.values(Mode).filter((value) => typeof value === "string") as option}
-        <option value={option}>{option}</option>
-      {/each}
-    </select>
-  </div>
-  <div class="flex">
-    <span>KIND</span>
-    <select bind:value={kind}>
-      {#each kinds as option}
-        <option value={option[0]}>{option[1]}</option>
-      {/each}
-    </select>
-  </div>
-  <div class="flex">
-    <span>NAME</span>
-    <input class="input input-bordered w-full max-w-xs" bind:value={name} />
-  </div>
-  <div class="flex">
-    <span>HOUR</span>
-    <input type="checkbox" class="toggle" bind:checked={hour} />
-    {#if hour}
-      <span>OPENING</span>
-      <input
-        class="input input-bordered w-full max-w-xs"
-        bind:value={opening}
-      />
-      <span>CLOSING</span>
-      <input
-        class="input input-bordered w-full max-w-xs"
-        bind:value={closing}
-      />
-    {/if}
-  </div>
-</div>
 <div class="w-screen h-[70vh] relative">
   <canvas
     bind:this={canvas}

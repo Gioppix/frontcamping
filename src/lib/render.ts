@@ -23,9 +23,13 @@ let maxLat: number;
 let minLon: number;
 let maxLon: number;
 
+let current_pos: Coordinate | undefined = undefined;
+
+let highlited_route: number[] | undefined = undefined;
+
 export let editable: boolean;
 import { get_saved_camping, save_camping } from "./storage";
-let camping = await get_saved_camping();
+export let camping = await get_saved_camping();
 console.log(camping)
 
 
@@ -158,9 +162,18 @@ export function drawcamping() {
             if (connectedStreet) {
                 const start = mapCoordinatesToCanvas(street.position.lon, street.position.lat);
                 const end = mapCoordinatesToCanvas(connectedStreet.position.lon, connectedStreet.position.lat);
+
+                if (highlited_route?.find(iddd => iddd == connectionId)) {
+                    ctx.fillStyle = "white";
+                } else {
+                    ctx.fillStyle = "blue";
+
+                }
+
                 ctx.beginPath();
                 ctx.moveTo(start.newX, start.newY);
                 ctx.lineTo(end.newX, end.newY);
+                ctx.lineWidth = 7;
                 ctx.stroke();
             }
         });
@@ -178,6 +191,14 @@ export function drawcamping() {
             ctx.fill();
         }
     });
+
+    if (current_pos) {
+        const point = mapCoordinatesToCanvas(current_pos.lon, current_pos.lat);
+        ctx.fillStyle = 'purple';
+        ctx.beginPath();
+        ctx.arc(point.newX, point.newY, 10, 0, 2 * Math.PI);
+        ctx.fill();
+    }
 
 }
 
@@ -410,4 +431,13 @@ function get_average(coordinates: Coordinate[]): Coordinate {
         lat: totalLat / coordinates.length,
         lon: totalLon / coordinates.length
     };
+}
+
+
+export function set_high_route(h: number[] | undefined) {
+    highlited_route = h;
+}
+
+export function set_current_pos(c: Coordinate) {
+    current_pos = c;
 }
