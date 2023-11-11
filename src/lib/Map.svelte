@@ -120,46 +120,72 @@
 </script>
 
 {#if admin}
-  <div class="flex gap-8">
-    <div class="flex">
-      <span> EDIT </span>
-      <input type="checkbox" class="toggle" bind:checked={editable} />
-    </div>
-    <div class="flex">
-      <span>MODE</span>
-      <select bind:value={mode}>
-        {#each Object.values(Mode).filter((value) => typeof value === "string") as option}
-          <option value={option}>{option}</option>
-        {/each}
-      </select>
-    </div>
-    <div class="flex">
-      <span>KIND</span>
-      <select bind:value={kind}>
-        {#each kinds as option}
-          <option value={option[0]}>{option[1]}</option>
-        {/each}
-      </select>
-    </div>
-    <div class="flex">
-      <span>NAME</span>
-      <input class="input input-bordered w-full max-w-xs" bind:value={name} />
-    </div>
-    <div class="flex">
-      <span>HOUR</span>
-      <input type="checkbox" class="toggle" bind:checked={hour} />
-      {#if hour}
-        <span>OPENING</span>
+  <div class="flex flex-col p-4">
+    <div class="form-control">
+      <label class="label cursor-pointer w-fit gap-4">
+        <span class="label-text">EDIT MODE</span>
         <input
-          class="input input-bordered w-full max-w-xs"
-          bind:value={opening}
+          type="checkbox"
+          class="toggle bg-base-300"
+          bind:checked={editable}
         />
-        <span>CLOSING</span>
-        <input
-          class="input input-bordered w-full max-w-xs"
-          bind:value={closing}
-        />
-      {/if}
+      </label>
+    </div>
+    <div class="form-control">
+      <label class="label cursor-pointer w-fit gap-4">
+        <span class="label-text">MODE</span>
+        <select bind:value={mode} class="select input-bordereda">
+          {#each Object.values(Mode).filter((value) => typeof value === "string") as option}
+            <option value={option}>{option}</option>
+          {/each}
+        </select>
+      </label>
+    </div>
+    <div class="form-control">
+      <label class="label cursor-pointer w-fit gap-4">
+        <span class="label-text">KIND</span>
+        <select bind:value={kind} class="select input-bordered">
+          {#each kinds as option}
+            <option value={option[0]}>{option[1]}</option>
+          {/each}
+        </select>
+      </label>
+    </div>
+    <div class="form-control">
+      <label class="label cursor-pointer w-fit gap-4">
+        <span class="label-text">NAME</span>
+        <input type="text" class="input input-bordered" bind:value={name} />
+      </label>
+    </div>
+
+    <div class="form-control">
+      <label class="label cursor-pointer w-fit gap-4">
+        <span class="label-text">HOUR</span>
+        <input type="checkbox" class="toggle" bind:checked={hour} />
+        <!-- {#if hour} -->
+        <div class="flex gap-4 overflow-hidden" style={hour ? "" : "width:0;"}>
+          <div class="form-control">
+            <label class="label cursor-pointer w-fit gap-4">
+              <span class="label-text">OPENING</span>
+              <input
+                class="input input-bordered w-full max-w-xs"
+                bind:value={opening}
+              />
+            </label>
+          </div>
+
+          <div class="form-control">
+            <label class="label cursor-pointer w-fit gap-4">
+              <span class="label-text">CLOSING</span>
+              <input
+                class="input input-bordered w-full max-w-xs"
+                bind:value={closing}
+              />
+            </label>
+          </div>
+        </div>
+        <!-- {/if} -->
+      </label>
     </div>
   </div>
 {/if}
