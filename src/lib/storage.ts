@@ -458,6 +458,7 @@ let defaultcamping: Camping = {
 }
 
 import { createClient } from '@supabase/supabase-js'
+import { camping, set_high_route } from './render'
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient('https://wfemmcrupcbdohckoocn.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndmZW1tY3J1cGNiZG9oY2tvb2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA2MTgzMTQsImV4cCI6MjAwNjE5NDMxNH0.QDx8Vim9mn9sxUJNR14MRNp-_Oh8w9WEUNuPNPEVc5o')
@@ -501,3 +502,107 @@ export async function save_camping(c: Camping) {
 
 // save_camping(defaultcamping);
 
+
+
+function distance_2(pos1: Coordinate, pos2: Coordinate): number {
+    // Use an appropriate distance formula; for simplicity, Euclidean distance is used here
+    return Math.sqrt(
+        Math.pow(pos1.lat - pos2.lat, 2) + Math.pow(pos1.lon - pos2.lon, 2)
+    );
+}
+export function dijkstra(
+    camp: Camping,
+    startNodeId: number,
+    endNodeId: number
+): { path: number[]; distance: number } {
+    const distances: { [nodeId: number]: number } = {};
+    const prev: { [nodeId: number]: number | null } = {};
+    const queue: number[] = [];
+
+    // Initialize distances and previous nodes
+    for (const node of camp.streets) {
+        distances[node.id] = node.id === startNodeId ? 0 : Infinity;
+        prev[node.id] = null;
+        queue.push(node.id);
+    }
+
+    while (queue.length > 0) {
+        // Find the node with the smallest distance
+        queue.sort((a, b) => distances[a] - distances[b]);
+        const current = queue.shift()!;
+
+        // Stop if we reach the end node
+        if (current === endNodeId) break;
+
+        // Update distance to each neighbor
+        const currentNode = camp.streets.find((node) => node.id === current)!;
+        for (const neighborId of currentNode.connects) {
+            const neighborNode = camp.streets.find(
+                (node) => node.id === neighborId
+            )!;
+            const alt =
+                distances[current] +
+                distance_2(currentNode.position, neighborNode.position);
+
+            if (alt < distances[neighborId]) {
+                distances[neighborId] = alt;
+                prev[neighborId] = current;
+            }
+        }
+    }
+
+    // Reconstruct the path and calculate the total distance
+    let path = [];
+    let totalDistance = 0;
+    let current: number | null = endNodeId;
+
+    while (current !== null) {
+        path.unshift(current);
+        const nextNode = prev[current];
+        if (nextNode !== null) {
+            const currentNode = camp.streets.find((node) => node.id === current)!;
+            const nextNodeObj = camp.streets.find((node) => node.id === nextNode)!;
+            totalDistance += distance_2(currentNode.position, nextNodeObj.position);
+        }
+        current = nextNode;
+    }
+
+    // Check if a valid path was found
+    if (path[0] !== startNodeId) {
+        return { path: [], distance: 0 };
+    }
+
+    return { path, distance: totalDistance };
+}
+
+
+export function wrapper(start_node: number, endNodeId: number): { distance: number, path: [number, number][] } {
+    let { path, distance } = dijkstra(
+        camping,
+        start_node,
+        endNodeId
+    );
+    //remaining_distance = distance * 111000;
+    let paths: [number, number][] = [];
+    for (let i = 0; i < path.length - 1; i++) {
+        paths.push([path[i], path[i + 1]]);
+    }
+    // set_high_route(paths);
+    return { distance, path: paths };
+}
+
+export function get_closest(c: Coordinate): StreetNode {
+    let closest: StreetNode = camping.streets[0];
+    let min_dist = Infinity;
+    camping.streets.forEach((s_n) => {
+        const cur_dist = distance_2(
+            s_n.position,
+            c
+        );
+        if (cur_dist < min_dist) {
+            min_dist = cur_dist;
+            closest = s_n;
+        }
+    });
+    return closest;
+}

@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import {
     Mode,
+    camping,
     drawcamping,
     handleClick,
     init,
@@ -9,12 +10,13 @@
     setMode,
     set_bounds,
     set_editable,
+    set_high_route,
     setclosing,
     sethour,
     setname,
     setopening,
   } from "$lib/render";
-  import { PlaceKind } from "./storage";
+  import { PlaceKind, wrapper } from "./storage";
   import { Loader } from "@googlemaps/js-api-loader";
   const loader = new Loader({
     apiKey: "AIzaSyAMwixKdkqNqZn7nq8II64P5uoxvTTfzQU",
@@ -55,6 +57,16 @@
       map.addListener("click", (mapsMouseEvent) => {
         // console.log(JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2));
         handleClick(mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng());
+        if (editable) {
+          set_high_route([]);
+          const paths: [number, number][] = [];
+          for (let node of camping.streets) {
+            const { distance, path } = wrapper(camping.streets[0].id, node.id);
+            paths.push(...path);
+          }
+          //   console.log(paths);
+          set_high_route(paths);
+        }
         drawcamping();
       });
 

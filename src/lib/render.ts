@@ -88,6 +88,63 @@ export async function handleClick(lat: number, lon: number) {
             default:
                 throw new Error("unsupported mode")
         }
+        function validateStreets(camp: Camping): void {
+            const validNodeIds = new Set(camp.streets.map(node => node.id));
+
+            // Filter out invalid connections and self-references
+            camp.streets.forEach(node => {
+                node.connects = node.connects.filter(connectId =>
+                    connectId !== node.id && validNodeIds.has(connectId)
+                );
+            });
+
+            // Optional: Remove isolated nodes (nodes with no connections)
+            camp.streets = camp.streets.filter(node => node.connects.length > 0);
+        }
+
+        // Usage
+        validateStreets(camping);
+        // function mergeNodesWithSamePosition(camp: Camping): void {
+        //     const positionMap = new Map<string, StreetNode>();
+        //     const mergedNodes: StreetNode[] = [];
+
+        //     // Group nodes by their positions
+        //     for (const node of camp.streets) {
+        //         const positionKey = `${node.position.lat},${node.position.lon}`;
+        //         if (!positionMap.has(positionKey)) {
+        //             positionMap.set(positionKey, { ...node, connects: [] });
+        //         }
+
+        //         // Merge connections, avoiding duplicates and self-references
+        //         const mergedNode = positionMap.get(positionKey)!;
+        //         for (const connectId of node.connects) {
+        //             if (!mergedNode.connects.includes(connectId) && connectId !== mergedNode.id) {
+        //                 mergedNode.connects.push(connectId);
+        //             }
+        //         }
+        //     }
+
+        //     // Create the array of merged nodes
+        //     for (const mergedNode of positionMap.values()) {
+        //         mergedNodes.push(mergedNode);
+        //     }
+
+        //     // Update connections to use new merged node IDs
+        //     const idMapping = new Map(camp.streets.map(node => [node.id, positionMap.get(`${node.position.lat},${node.position.lon}`)!.id]));
+        //     for (const node of mergedNodes) {
+        //         node.connects = node.connects.map(connectId => idMapping.get(connectId)!);
+        //     }
+
+        //     // Update the streets array in camping object
+        //     camp.streets = mergedNodes;
+        // }
+
+        // // Example usage
+        // mergeNodesWithSamePosition(camping);
+
+
+
+
         await save_camping(camping);
     }
 
@@ -159,8 +216,6 @@ export function drawcamping() {
 
         }
     }
-    ctx.strokeStyle = 'white'; // Set line color to white
-    ctx.lineWidth = 2; // Set line width
 
     camping.streets.forEach(street => {
         street.connects.forEach(connectionId => {
@@ -173,11 +228,11 @@ export function drawcamping() {
                 if (highlited_route?.find(route => {
                     return route[0] == street.id && route[1] == connectionId || route[1] == street.id && route[0] == connectionId
                 })) {
-                    // console.log("found")
                     ctx.strokeStyle = "blue";
 
                 } else {
-                    ctx.strokeStyle = "white";
+
+                    ctx.strokeStyle = "#000";
 
                 }
 
@@ -446,6 +501,7 @@ export function get_average(coordinates: Coordinate[]): Coordinate {
 export function set_high_route(h: [number, number][] | undefined) {
     highlited_route = h;
 }
+
 
 export function set_current_pos(c: Coordinate) {
     current_pos = c;
