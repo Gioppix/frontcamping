@@ -171,7 +171,7 @@ export function drawcamping() {
 
                 // console.log(highlited_route)
                 if (highlited_route?.find(route => {
-                    return route[0] == street.id && route[1] == connectionId
+                    return route[0] == street.id && route[1] == connectionId || route[1] == street.id && route[0] == connectionId
                 })) {
                     // console.log("found")
                     ctx.strokeStyle = "blue";
@@ -423,7 +423,7 @@ function deleteee(lat: number, lon: number) {
 
 
 
-function get_average(coordinates: Coordinate[]): Coordinate {
+export function get_average(coordinates: Coordinate[]): Coordinate {
     // if (coordinates.length === 0) {
     //     return null; // Return null for empty array
     // }
