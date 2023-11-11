@@ -48,16 +48,44 @@ export interface Camping {
     streets: StreetNode[]
 }
 
-export function get_saved_camping(): Camping {
-    const saved = localStorage.getItem('camping');
-    if (saved) {
-        return JSON.parse(saved);
+
+import { createClient } from '@supabase/supabase-js'
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient('https://wfemmcrupcbdohckoocn.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndmZW1tY3J1cGNiZG9oY2tvb2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA2MTgzMTQsImV4cCI6MjAwNjE5NDMxNH0.QDx8Vim9mn9sxUJNR14MRNp-_Oh8w9WEUNuPNPEVc5o')
+
+export async function get_saved_camping(): Promise<Camping> {
+    // const saved = localStorage.getItem('camping');
+    // if (saved) {
+    //     return JSON.parse(saved);
+    // }
+    // localStorage.setItem('camping', JSON.stringify(defaultcamping));
+    // return defaultcamping;
+    const res = await supabase.from("campings").select("camping").eq("id", 1).single();
+    if (res.error) {
+        console.log(res.error)
     }
-    localStorage.setItem('camping', JSON.stringify(defaultcamping));
-    return defaultcamping;
+    console.log(res.data)
+    return res.data?.camping as Camping;
+
 }
-export function save_camping(c: Camping) {
-    localStorage.setItem('camping', JSON.stringify(c));
+export async function save_camping(c: Camping) {
+    //localStorage.setItem('camping', JSON.stringify(c));
+
+    const { data, error } = await supabase
+        .from('campings')
+        .update({ camping: c })
+        .eq("id", 1)
+        .select()
+    if (error) {
+        console.log(error)
+    }
+    if (data) {
+        console.log("SAVED")
+    }
+
+    // return res.data;
+
 }
 
 export const kinds = [];
@@ -493,3 +521,4 @@ let defaultcamping: Camping = {
         }
     ]
 }
+// save_camping(defaultcamping);

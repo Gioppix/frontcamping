@@ -21,7 +21,8 @@ let maxLon: number;
 
 export let editable: boolean;
 import { get_saved_camping, save_camping } from "./storage";
-let camping = get_saved_camping();
+let camping = await get_saved_camping();
+console.log(camping)
 
 
 const vertices_radiuses = 6;
@@ -55,7 +56,7 @@ export function init(c: HTMLCanvasElement, mapp: google.maps.Map) {
     // map.setCenter()
 }
 let selected: Coordinate | undefined = undefined;
-export function handleClick(lat: number, lon: number) {
+export async function handleClick(lat: number, lon: number) {
     switch (mode) {
         case "DELETE":
             deleteee(lat, lon);
@@ -72,7 +73,7 @@ export function handleClick(lat: number, lon: number) {
         default:
             throw new Error("unsupported mode")
     }
-    save_camping(camping);
+    await save_camping(camping);
 
 }
 
