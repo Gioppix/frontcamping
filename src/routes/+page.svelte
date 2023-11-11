@@ -39,7 +39,7 @@
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
-    compass = "v1 " + current_pos.lat + " " + current_pos.lon;
+    compass = "v2 " + current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
@@ -87,7 +87,7 @@
         const lon = position.coords.longitude;
         set_current_pos({ lat, lon });
         map.setCenter({ lat, lng: lon });
-        search = search + "";
+        search = search.toUpperCase();
         console.log(`Latitude: ${lat}, Longitude: ${lon}`);
         // You can update the position on your app's UI here
       },
