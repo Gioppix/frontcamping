@@ -1,22 +1,37 @@
-# create-svelte
+# SupaCamping
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Everything you need to manage your camping, powered by **SupaTeam**.
 
-## Creating a project
+## How to use
+Here's a very simple guide on how to use the project.
+### Camping Managers
+Go to the private path `/editor` and use the command there to edit the camping.
+### Final Users
+Simply search for a pitch, parking, bar or click the buttons below to travel to the nearest one (account for queues).
+> You might be able to find a faster route by walking on unmarked roads.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Our Values
+1. Accessibility
+2. Privacy and Security (no faces or personal data is saved)
+3. Open Source for the better
+4. Ease of use
+
+
+## Starting the project
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+# Install dependencies
+npm i
 
-# create a new project in my-app
-npm create svelte@latest my-app
+# Build the project
+npm run build
+
+# Serve the project
+npm run preview
 ```
 
 ## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've cloned the project and installed dependencies with `npm install`, start a development server:
 
 ```bash
 npm run dev
@@ -24,15 +39,3 @@ npm run dev
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

@@ -220,7 +220,7 @@
       </div>
 
       <div class="stat place-items-center">
-        <div class="stat-title text-xs">Traver time</div>
+        <div class="stat-title text-xs">Travel time</div>
         <div class="stat-value">
           {Math.ceil((remaining_distance * 1.38) / 120)}{#if delay > 0}
             <span class="text-error">{"+" + delay}</span>
