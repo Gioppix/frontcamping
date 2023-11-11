@@ -170,7 +170,8 @@
   <div
     id="map"
     bind:this={container}
-    class="w-full h-full top-0 bottom-0 opacity-40 absolute"
+    class={"w-full h-full top-0 bottom-0 absolute " +
+      (admin ? "opacity-40" : "opacity-0")}
   />
 </div>
 <!-- {#if ready} -->
