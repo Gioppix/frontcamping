@@ -44,7 +44,7 @@
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
-    compass = "v4 " + current_pos.lat + " " + current_pos.lon;
+    compass = "v5 " + current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
@@ -55,6 +55,7 @@
           get_closest(current_pos).id,
           found_id
         );
+        remaining_distance = distance;
         set_high_route(path);
       }
     }
