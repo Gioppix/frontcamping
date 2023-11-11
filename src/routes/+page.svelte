@@ -35,6 +35,9 @@
   }
 
   setInterval(() => {
+    if (remaining_distance < 5) {
+      search = "";
+    }
     search += "1";
     search = search.substring(0, search.length - 1);
   }, 50);
@@ -44,7 +47,7 @@
     found_id = undefined;
     remaining_distance = 0;
     set_high_route([]);
-    compass = "v5 " + current_pos.lat + " " + current_pos.lon;
+    compass = "v6 " + current_pos.lat + " " + current_pos.lon;
     if (camping) {
       const place = camping.places.find((p) => p.name == search);
       if (place) {
