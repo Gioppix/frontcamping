@@ -31,7 +31,7 @@ let first_street: StreetNode | undefined = undefined;
 let highlited_route: [number, number][] | undefined = undefined;
 export let editable: boolean = false;
 
-export let current_pos: Coordinate | undefined = undefined;
+export let current_pos: Coordinate;
 
 
 
@@ -197,7 +197,7 @@ export function drawcamping() {
         ctx.font = "20px serif";
         const pos = get_average(place.positions);
         const norm_pos = mapCoordinatesToCanvas(pos.lon, pos.lat);
-        ctx.fillText(`${place.name ? place.name : ""} ${place.hours ? place.hours.opening + " " + place.hours.closing : ""}`, norm_pos.newX, norm_pos.newY);
+        ctx.fillText(`${place.name ? place.name : ""} ${place.hours ? place.hours.opening + " " + place.hours.closing : ""}`, norm_pos.newX - 15, norm_pos.newY + 10);
 
 
         for (let coord of place.positions) {
@@ -321,19 +321,19 @@ function findMinMaxCoords(camping: Camping): { minLat: number, maxLat: number, m
 function get_color(p: PlaceKind): string {
     switch (p) {
         case PlaceKind.BAGNI:
-            return "brown"
+            return "#33cccc"
         case PlaceKind.MARKET:
-            return "purple"
+            return "#cc6699"
         case PlaceKind.PARKING:
-            return "grey"
+            return "#666666"
         case PlaceKind.PIAZZOLA:
-            return "green"
+            return "#99cc99"
         case PlaceKind.RESTAURANT_BAR:
-            return "red"
+            return "#3936A3"
         case PlaceKind.SPIAGGIA:
-            return "yellow"
+            return "#ffff66"
         default:
-            return "black"
+            return "#000000"
     }
 }
 

@@ -51,7 +51,7 @@
       });
 
       map.setZoom(19);
-      console.log(map.getZoom());
+      //   console.log(map.getZoom());
       await init(canvas, map);
       mounted = true;
       map.addListener("click", (mapsMouseEvent) => {
@@ -71,7 +71,7 @@
       });
 
       map.addListener("zoom_changed", () => {
-        console.log(map.getZoom());
+        // console.log(map.getZoom());
       });
       requestAnimationFrame(animate);
     });
@@ -109,7 +109,7 @@
 
     requestAnimationFrame(animate); // Request the next frame
   }
-  console.log("QUI");
+  //   console.log("QUI");
   // Start the animation loop
   let kinds = Object.keys(PlaceKind)
     .filter((key) => !isNaN(Number(key)))
@@ -165,7 +165,7 @@
   <canvas
     bind:this={canvas}
     class="w-full h-full absolute"
-    style={`z-index: -10;`}
+    style={`z-index: -10; ${admin ? "" : "background-color: #f5f5dc;"} `}
   />
   <div
     id="map"
