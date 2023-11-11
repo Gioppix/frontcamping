@@ -1,6 +1,4 @@
 <script lang="ts">
-  console.log("lol");
-
   import Map from "$lib/Map.svelte";
   import {
     camping,
@@ -113,7 +111,7 @@
       );
     });
   }
-  set_high_route([[2654, 9769]]);
+  //   set_high_route([[2654, 9769]]);
   function start_updating() {
     console.log("UPDATING");
     getCoordinates().then((c) => {
@@ -144,19 +142,6 @@
     });
     return closest;
   }
-
-  window.onerror = function (message, file, line, col, error) {
-    alert("Error occurred: " + error.message);
-    return false;
-  };
-  window.addEventListener("error", function (e) {
-    alert("Error occurred: " + e.error.message);
-    return false;
-  });
-
-  window.addEventListener("unhandledrejection", function (e) {
-    alert("Error occurred: " + e.reason.message);
-  });
 </script>
 
 <button class="btn" on:click={start_updating}>AGGIORNA POS</button>

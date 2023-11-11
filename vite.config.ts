@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     plugins: [sveltekit()],
     build: {
-        target: "esnext" // or "es2019",
+        target: "es2019" // or "es2019",
 
     }
 });

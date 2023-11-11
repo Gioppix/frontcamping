@@ -15,18 +15,21 @@
     setopening,
   } from "$lib/render";
   import { PlaceKind } from "./storage";
+  import { Loader } from "@googlemaps/js-api-loader";
+  const loader = new Loader({
+    apiKey: "AIzaSyAMwixKdkqNqZn7nq8II64P5uoxvTTfzQU",
+    version: "weekly",
+  });
 
   let canvas: HTMLCanvasElement;
   let mounted = false;
-  let ready = false;
+  //   let ready = false;
   let kind: PlaceKind;
   let mode: string;
   let name: string;
   let hour: boolean;
   let opening: number;
   let closing: number;
-
-  onMount(() => {});
   export let admin: boolean;
   let editable = false;
   $: {
@@ -41,16 +44,13 @@
   //45.13785978577548, 10.288059671713954
 
   onMount(async () => {
-    // @ts-ignore
-    window.initMap = () => {
-      console.log("ciao");
-      ready = true;
-      //let container = document.getElementById("map");
+    loader.importLibrary("maps").then(async () => {
       map = new google.maps.Map(container, {
         zoom: 19,
         mapTypeId: "satellite",
         //styles: mapStyles, // optional
       });
+
       map.setZoom(19);
       console.log(map.getZoom());
       init(canvas, map);
@@ -64,7 +64,9 @@
       map.addListener("zoom_changed", () => {
         console.log(map.getZoom());
       });
-    };
+      requestAnimationFrame(animate);
+    });
+
     // map.getBounds();
   });
   $: {
@@ -88,12 +90,10 @@
   }
 
   function animate() {
-    let i = 0;
     if (map) {
       const temp = map.getBounds();
       if (temp) {
         set_bounds(temp);
-        i++;
         drawcamping();
       }
     }
@@ -101,22 +101,12 @@
     requestAnimationFrame(animate); // Request the next frame
   }
   console.log("QUI");
-  requestAnimationFrame(animate); // Start the animation loop
+  // Start the animation loop
   let kinds = Object.keys(PlaceKind)
     .filter((key) => !isNaN(Number(key)))
     .map((key) => [Number(key), PlaceKind[key as any]]);
 </script>
 
-<svelte:head>
-  <script>
-  </script>
-  <script
-    defer
-    async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMwixKdkqNqZn7nq8II64P5uoxvTTfzQU&callback=initMap&v=weekly"
-  >
-  </script>
-</svelte:head>
 {#if admin}
   <div class="flex gap-8">
     <div class="flex">

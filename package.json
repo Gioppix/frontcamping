@@ -27,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@googlemaps/js-api-loader": "^1.16.2",
 		"@supabase/supabase-js": "^2.38.4"
 	}
 }

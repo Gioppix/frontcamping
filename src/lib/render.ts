@@ -5,7 +5,7 @@ export enum Mode {
     UPDATE,
     STREET
 }
-
+// await new Promise(r => setTimeout(r, 2000));
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 export let map: google.maps.Map;
@@ -29,7 +29,6 @@ let highlited_route: [number, number][] | undefined = undefined;
 export let editable: boolean;
 import { get_saved_camping, save_camping } from "./storage";
 export let camping = await get_saved_camping();
-console.log(camping)
 
 
 const vertices_radiuses = 6;
